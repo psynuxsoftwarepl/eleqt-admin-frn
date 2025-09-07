@@ -1,0 +1,37 @@
+
+
+import React, { useState } from 'react';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Tabs from './components/Tabs';
+
+function App() {
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('admins');
+  const [showHome, setShowHome] = useState(true);
+
+  if (!loggedInUser) {
+    return <Login onLogin={setLoggedInUser} />;
+  }
+
+  return (
+    <div style={{background:'#222',minHeight:'100vh',color:'#fff'}}>
+      <div style={{padding:'2rem'}}>
+        <button onClick={() => {setShowHome(true);}} style={{marginRight:'1rem',padding:'8px'}}>Home</button>
+        <button onClick={() => {setShowHome(false);}} style={{padding:'8px'}}>Dashboard</button>
+        <button onClick={() => {setLoggedInUser(null);}} style={{float:'right',padding:'8px'}}>Logout</button>
+      </div>
+      {showHome ? (
+        <Home username={loggedInUser} />
+      ) : (
+        <div style={{padding:'2rem'}}>
+          <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+          <Dashboard activeTab={activeTab} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
